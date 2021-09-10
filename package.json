@@ -21,9 +21,16 @@
     "@babel/core": "^7.15.5",
     "@babel/runtime": "^7.15.4",
     "@react-native-community/eslint-config": "^3.0.1",
+    "@storybook/addon-actions": "^5.3",
+    "@storybook/addon-knobs": "^5.3",
+    "@storybook/addon-links": "^5.3",
+    "@storybook/addon-ondevice-actions": "^5.3.23",
+    "@storybook/addon-ondevice-knobs": "^5.3.25",
+    "@storybook/react-native": "^5.3.25",
     "@types/react": "^17.0.20",
     "@types/react-native": "^0.65.0",
     "babel-jest": "^27.1.1",
+    "babel-loader": "^8.2.2",
     "eslint": "^7.32.0",
     "html-webpack-plugin": "^5.3.2",
     "jest": "^27.1.1",
@@ -36,6 +43,13 @@
     "webpack": "^5.52.0",
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.1.1"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": false,
+    "trailingComma": "es5",
+    "arrowParens": "always"
   },
   "jest": {
     "preset": "react-native"
