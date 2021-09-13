@@ -3,6 +3,7 @@ import { Dimensions, StyleSheet, Text, View } from "react-native";
 
 const { height } = Dimensions.get("screen");
 
+console.log("test");
 const App = () => {
   return (
     <View style={styles.container}>
