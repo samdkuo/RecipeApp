@@ -1,16 +1,37 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { Switch, Route } from "react-router-dom";
+import Home from "./pages/home";
 
 const { height } = Dimensions.get("screen");
 
-console.log("test");
+const routes = [{ component: Home, path: "/", exact: true }];
 const App = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.center}>
-        <Text>Hello React Native Web!!!</Text>
-      </View>
-    </View>
+    <Switch>
+      {routes.map(
+        (
+          route: { component: any; path: string; exact: boolean },
+          idx: number
+        ) => {
+          return (
+            <Route
+              key={idx}
+              path={route.path}
+              exact={route.exact}
+              render={() => (
+                <View style={styles.container}>
+                  {/* <route.component.default {...routeProps} /> */}
+                </View>
+              )}
+            />
+          );
+        }
+      )}
+      <Route>
+        <View>Not Found</View>
+      </Route>
+    </Switch>
   );
 };
 
