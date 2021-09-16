@@ -18,7 +18,7 @@ const App = () => {
             <Route
               key={idx}
               path={route.path}
-              exact={route.exact}
+              exact={Boolean(route.exact)}
               render={(routeProps) => (
                 <View style={styles.container}>
                   <route.component.default {...routeProps} />
