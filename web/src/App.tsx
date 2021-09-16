@@ -1,11 +1,11 @@
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { Switch, Route } from "react-router-dom";
-import Home from "./pages/home";
 
 const { height } = Dimensions.get("screen");
 
-const routes = [{ component: Home, path: "/", exact: true }];
+const routes = require("react-router-routes-loader!./pages");
+
 const App = () => {
   return (
     <Switch>
@@ -19,9 +19,9 @@ const App = () => {
               key={idx}
               path={route.path}
               exact={route.exact}
-              render={() => (
+              render={(routeProps) => (
                 <View style={styles.container}>
-                  {/* <route.component.default {...routeProps} /> */}
+                  <route.component.default {...routeProps} />
                 </View>
               )}
             />
