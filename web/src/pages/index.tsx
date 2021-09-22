@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <Layout>
       <Text>Home</Text>
-      <RecipeCard />
+      <RecipeCard title={"Hamburger"} totalIngredients={10} cookTime={40} />
     </Layout>
   );
 };
