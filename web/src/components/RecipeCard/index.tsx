@@ -1,5 +1,4 @@
-import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 
 interface RecipeCardProps {
   title: string;
@@ -9,7 +8,7 @@ interface RecipeCardProps {
 
 function RecipeCard({ title, totalIngredients, cookTime }: RecipeCardProps) {
   return (
-    <View
+    <TouchableOpacity
       style={{
         borderWidth: 1,
         borderRadius: 8,
@@ -24,13 +23,13 @@ function RecipeCard({ title, totalIngredients, cookTime }: RecipeCardProps) {
           uri: "https://images.unsplash.com/photo-1481070555726-e2fe8357725c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80",
         }}
       />
-      <View>
+      <View style={{ padding: 8 }}>
         <Text>{title}</Text>
         <View>
           <Text>{`${totalIngredients} ingredients | ${cookTime} min`}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
