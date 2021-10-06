@@ -6,29 +6,84 @@ import {
   View,
   StyleSheet,
 } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import { getColors } from "../../theme/colors";
 
 interface RecipeFormProps {}
 
+const Input = ({
+  label,
+  multi = false,
+}: {
+  label: string;
+  multi?: boolean;
+}) => {
+  return (
+    <View style={{ marginTop: 8 }}>
+      <Text style={{ textTransform: "capitalize", color: colors.primary }}>
+        {label}
+      </Text>
+      <TextInput
+        style={styles.inputs}
+        multiline={multi}
+        numberOfLines={multi ? 4 : 1}
+      />
+    </View>
+  );
+};
+
+const IngredientInput = () => {
+  const [ingredientsList, setIngredientsList] = React.useState([]);
+
+  return (
+    <View style={{ marginTop: 8 }}>
+      <Text style={{ textTransform: "capitalize", color: colors.primary }}>
+        Add Ingredients
+      </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <TextInput style={[styles.inputs, { flex: 1 }]} placeholder="name" />
+        <TextInput
+          style={[styles.inputs, { flex: 1 }]}
+          placeholder="quantity"
+        />
+        <TouchableOpacity
+          style={[
+            styles.submit,
+            {
+              marginTop: 0,
+              marginLeft: 8,
+              paddingHorizontal: 16,
+            },
+          ]}
+        >
+          <Text style={{ color: "white" }}>Add</Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        {ingredientsList.map((ingredient, index) => (
+          <Text key={index}>{ingredient}</Text>
+        ))}
+      </View>
+    </View>
+  );
+};
+
+const colors = getColors();
 function RecipeForm({}: RecipeFormProps) {
   return (
     <View style={styles.container}>
-      <Text>Add Recipe</Text>
+      <Text style={styles.title}>Add new Recipe</Text>
 
-      <TextInput style={styles.inputs} placeholder="dish name" />
-      <TextInput
-        style={styles.inputs}
-        placeholder="description"
-        multiline
-        numberOfLines={4}
-      />
-      <TextInput
-        style={styles.inputs}
-        placeholder="directions"
-        multiline
-        numberOfLines={4}
-      />
+      <Input label="Dish Name" />
+      <Input label="description" multi />
+      <IngredientInput />
+      <Input label="directions" multi />
+
       <TouchableOpacity style={styles.submit}>
         <Text style={{ color: "white" }}>Submit</Text>
       </TouchableOpacity>
@@ -43,21 +98,31 @@ const styles = StyleSheet.create({
     width: "50%",
     marginVertical: 16,
     padding: 8,
-    borderColor: "red",
-    borderWidth: 1,
-  },
-  inputs: {
-    borderColor: "gray",
+    borderColor: colors.secondary,
     borderWidth: 1,
     borderRadius: 4,
-    marginTop: 8,
+  },
+  title: {
+    color: colors.secondary,
+    fontSize: 24,
+    textTransform: "capitalize",
+    marginBottom: 8,
+  },
+  inputs: {
+    borderColor: colors.primary,
+    borderWidth: 1,
+    borderRadius: 4,
     padding: 8,
+    outlineColor: colors.cyan,
+    outlineWidth: 1,
   },
   submit: {
     padding: 8,
     marginTop: 4,
     borderRadius: 4,
-    backgroundColor: getColors().primary,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    backgroundColor: colors.primary,
     justifyContent: "center",
     alignItems: "center",
   },
