@@ -5,7 +5,9 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
+  Button,
 } from "react-native";
+import { Formik } from "formik";
 import { getColors } from "../../theme/colors";
 
 interface RecipeFormProps {}
@@ -34,41 +36,64 @@ const Input = ({
 const IngredientInput = () => {
   const [ingredientsList, setIngredientsList] = React.useState([]);
 
+  const handleSubmit = (values: { values: any }) => {
+    setIngredientsList([]);
+  };
   return (
     <View style={{ marginTop: 8 }}>
       <Text style={{ textTransform: "capitalize", color: colors.primary }}>
         Add Ingredients
       </Text>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
+
+      <Formik
+        initialValues={{ name: "", quantity: "" }}
+        onSubmit={(values) => console.log(values)}
       >
-        <TextInput style={[styles.inputs, { flex: 1 }]} placeholder="name" />
-        <TextInput
-          style={[styles.inputs, { flex: 1 }]}
-          placeholder="quantity"
-        />
-        <TouchableOpacity
-          style={[
-            styles.submit,
-            {
-              marginTop: 0,
-              marginLeft: 8,
-              paddingHorizontal: 16,
-            },
-          ]}
-        >
-          <Text style={{ color: "white" }}>Add</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        {ingredientsList.map((ingredient, index) => (
-          <Text key={index}>{ingredient}</Text>
-        ))}
-      </View>
+        {({ handleChange, handleBlur, handleSubmit, values }) => (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <TextInput
+              style={[styles.inputs, styles.ingredientInputs]}
+              placeholder="name"
+              onChangeText={handleChange("name")}
+              onBlur={handleBlur("name")}
+              value={values.name}
+            />
+
+            <TextInput
+              style={[styles.inputs, styles.ingredientInputs]}
+              placeholder="quantity"
+              onChangeText={handleChange("quantity")}
+              onBlur={handleBlur("quantity")}
+              value={values.quantity}
+            />
+
+            <TouchableOpacity
+              style={[
+                styles.submit,
+                {
+                  marginTop: 0,
+                  paddingHorizontal: 16,
+                },
+              ]}
+              // onPress={handleSubmit}s
+            >
+              <Text style={{ color: "white" }}>Add</Text>
+            </TouchableOpacity>
+
+            <View>
+              {ingredientsList.map((ingredient, index) => (
+                <Text key={index}>{ingredient}</Text>
+              ))}
+            </View>
+          </View>
+        )}
+      </Formik>
     </View>
   );
 };
@@ -116,6 +141,7 @@ const styles = StyleSheet.create({
     outlineColor: colors.cyan,
     outlineWidth: 1,
   },
+  ingredientInputs: { flex: 0.95 },
   submit: {
     padding: 8,
     marginTop: 4,
