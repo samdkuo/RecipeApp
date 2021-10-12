@@ -2,7 +2,7 @@ import React from "react";
 import {
   Text,
   TextInput,
-  TouchableOpacity,
+  Pressable,
   View,
   StyleSheet,
   Button,
@@ -33,11 +33,18 @@ const Input = ({
   );
 };
 
+interface Ingredient {
+  name: string;
+  quantity: string;
+}
 const IngredientInput = () => {
-  const [ingredientsList, setIngredientsList] = React.useState([]);
+  const [ingredientsList, setIngredientsList] = React.useState<
+    Array<Ingredient>
+  >([]);
 
-  const handleSubmit = (values: { values: any }) => {
-    setIngredientsList([]);
+  const handleSubmit = (values: Ingredient) => {
+    console.log(values);
+    setIngredientsList([values, ...ingredientsList]);
   };
   return (
     <View style={{ marginTop: 8 }}>
@@ -47,9 +54,9 @@ const IngredientInput = () => {
 
       <Formik
         initialValues={{ name: "", quantity: "" }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={handleSubmit}
       >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
+        {({ handleChange, handleBlur, values }) => (
           <View
             style={{
               flexDirection: "row",
@@ -58,7 +65,7 @@ const IngredientInput = () => {
             }}
           >
             <TextInput
-              style={[styles.inputs, styles.ingredientInputs]}
+              style={[styles.inputs, { flex: 0.9 }]}
               placeholder="name"
               onChangeText={handleChange("name")}
               onBlur={handleBlur("name")}
@@ -66,14 +73,14 @@ const IngredientInput = () => {
             />
 
             <TextInput
-              style={[styles.inputs, styles.ingredientInputs]}
+              style={[styles.inputs, { width: 80 }]}
               placeholder="quantity"
               onChangeText={handleChange("quantity")}
               onBlur={handleBlur("quantity")}
               value={values.quantity}
             />
 
-            <TouchableOpacity
+            <Pressable
               style={[
                 styles.submit,
                 {
@@ -81,10 +88,10 @@ const IngredientInput = () => {
                   paddingHorizontal: 16,
                 },
               ]}
-              // onPress={handleSubmit}s
+              onPress={() => handleSubmit(values)}
             >
               <Text style={{ color: "white" }}>Add</Text>
-            </TouchableOpacity>
+            </Pressable>
 
             <View>
               {ingredientsList.map((ingredient, index) => (
@@ -109,9 +116,9 @@ function RecipeForm({}: RecipeFormProps) {
       <IngredientInput />
       <Input label="directions" multi />
 
-      <TouchableOpacity style={styles.submit}>
+      <Pressable style={styles.submit}>
         <Text style={{ color: "white" }}>Submit</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }
@@ -141,7 +148,6 @@ const styles = StyleSheet.create({
     outlineColor: colors.cyan,
     outlineWidth: 1,
   },
-  ingredientInputs: { flex: 0.95 },
   submit: {
     padding: 8,
     marginTop: 4,
