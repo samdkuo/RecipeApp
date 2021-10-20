@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Text,
   TextInput,
@@ -33,19 +33,7 @@ const Input = ({
   );
 };
 
-interface Ingredient {
-  name: string;
-  quantity: string;
-}
-const IngredientInput = () => {
-  const [ingredientsList, setIngredientsList] = React.useState<
-    Array<Ingredient>
-  >([]);
-
-  const handleSubmit = (values: Ingredient) => {
-    console.log(values);
-    setIngredientsList([values, ...ingredientsList]);
-  };
+const IngredientInput = (handleSubmit: (values: Ingredient) => void) => {
   return (
     <View style={{ marginTop: 8 }}>
       <Text style={{ textTransform: "capitalize", color: colors.primary }}>
@@ -92,12 +80,6 @@ const IngredientInput = () => {
             >
               <Text style={{ color: "white" }}>Add</Text>
             </Pressable>
-
-            <View>
-              {ingredientsList.map((ingredient, index) => (
-                <Text key={index}>{ingredient}</Text>
-              ))}
-            </View>
           </View>
         )}
       </Formik>
@@ -105,20 +87,82 @@ const IngredientInput = () => {
   );
 };
 
+interface Ingredient {
+  name: string;
+  quantity: string;
+}
+
+interface Recipe {
+  name: string;
+  description: string;
+  ingredients: Array<Ingredient>;
+  directions: string;
+}
+
 const colors = getColors();
+
 function RecipeForm({}: RecipeFormProps) {
+  const [recipeList, setRecipeList] = React.useState<Array<Recipe>>([]);
+
+  const [ingredientsList, setIngredientsList] = React.useState<
+    Array<Ingredient>
+  >([]);
+
+  const handleIngredientSubmit = useCallback(
+    (values: Ingredient) => {
+      setIngredientsList([...ingredientsList, values]);
+    },
+    [ingredientsList]
+  );
+
+  const handleSubmit = (values: Recipe) => {
+    console.log(values);
+    setRecipeList([...recipeList, values]);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Add new Recipe</Text>
+    <View>
+      <Formik
+        initialValues={{
+          name: "",
+          description: "",
+          ingredients: [],
+          directions: "",
+        }}
+        onSubmit={handleSubmit}
+      >
+        {({ values }) => (
+          <View style={styles.container}>
+            <Text style={styles.title}>Add new Recipe</Text>
 
-      <Input label="Dish Name" />
-      <Input label="description" multi />
-      <IngredientInput />
-      <Input label="directions" multi />
+            <Input label="Dish Name" />
+            <Input label="description" multi />
+            {/* <IngredientInput handleSubmit={handleIngredientSubmit}/> */}
 
-      <Pressable style={styles.submit}>
-        <Text style={{ color: "white" }}>Submit</Text>
-      </Pressable>
+            <View>
+              {ingredientsList.map((ingredient, index) => (
+                <Text
+                  key={index}
+                >{`${ingredient.name} ${ingredient.quantity}`}</Text>
+              ))}
+            </View>
+            <Input label="directions" multi />
+
+            <Pressable
+              style={styles.submit}
+              onPress={() => handleSubmit(values)}
+            >
+              <Text style={{ color: "white" }}>Submit</Text>
+            </Pressable>
+          </View>
+        )}
+      </Formik>
+
+      <View>
+        {recipeList.map((recipe, index) => (
+          <Text key={index}>{`${recipe.name} ${recipe.description}`}</Text>
+        ))}
+      </View>
     </View>
   );
 }
